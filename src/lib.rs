@@ -1,3 +1,10 @@
+//! A library for hexmap operations.
+
+/// A hex coordinate using a cubic coordinate scheme.
+///
+/// See http://www.redblobgames.com/grids/hexagons/#coordinates for more detail.
+///
+/// All three coordinates must sum to zero.
 #[derive(Debug,PartialEq,PartialOrd)]
 pub struct Coordinate {
     x: i64,
@@ -6,10 +13,14 @@ pub struct Coordinate {
 }
 
 impl Coordinate {
+    /// Create a new Coordinate at 0, 0, 0.
+    ///
+    /// This returns a Result to match `at`, but always succeeds.
     pub fn new() -> Result<Self, &'static str> {
         Ok(Coordinate { x: 0, y: 0, z: 0 })
     }
 
+    /// Create a new Coordinate at the specified location, if that location is valid.
     pub fn at(x: i64, y: i64, z: i64) -> Result<Self, &'static str> {
         if x + y + z == 0 {
             Ok(Coordinate { x: x, y: y, z: z })
@@ -18,6 +29,7 @@ impl Coordinate {
         }
     }
 
+    /// Get the six neighbors of a given Coordinate.
     pub fn neighbors(&self) -> Vec<Coordinate> {
         vec![
             Coordinate::at(self.x + 1, self.y, self.z - 1).unwrap(),
@@ -29,6 +41,7 @@ impl Coordinate {
         ]
     }
 
+    /// Get the distance between two coordinates, in grid tiles.
     pub fn distance_to(&self, other: Coordinate) -> i64 {
         (
             (self.x - other.x).abs()
