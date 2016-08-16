@@ -3,4 +3,9 @@ name = "hexgrid"
 version = "0.1.0"
 authors = ["Kit La Touche <kit@transneptune.net>"]
 
+description = "A library for operations on a hexagonal grid."
+repository = "https://github.com/wlonk/hexgrid"
+readme = "README.md"
+license = "MIT"
+
 [dependencies]
