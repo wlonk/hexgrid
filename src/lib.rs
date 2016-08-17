@@ -5,6 +5,9 @@
 /// See http://www.redblobgames.com/grids/hexagons/#coordinates for more detail.
 ///
 /// All three coordinates must sum to zero.
+use std::ops::{Add, Sub};
+
+
 #[derive(Debug,PartialEq,PartialOrd)]
 pub struct Coordinate {
     x: i64,
@@ -48,6 +51,30 @@ impl Coordinate {
             + (self.y - other.y).abs()
             + (self.z - other.z).abs()
         ) / 2
+    }
+}
+
+impl Add for Coordinate {
+    type Output = Coordinate;
+
+    fn add(self, other: Coordinate) -> Coordinate {
+        Coordinate {
+            x: self.x + other.x,
+            y: self.y + other.y,
+            z: self.z + other.z,
+        }
+    }
+}
+
+impl Sub for Coordinate {
+    type Output = Coordinate;
+
+    fn sub(self, other: Coordinate) -> Coordinate {
+        Coordinate {
+            x: self.x - other.x,
+            y: self.y - other.y,
+            z: self.z - other.z,
+        }
     }
 }
 
@@ -97,5 +124,21 @@ mod tests {
         let coord_a = Coordinate::at(-3, -1, 4).unwrap();
         let coord_b = Coordinate::at(2, 7, -9).unwrap();
         assert_eq!(coord_a.distance_to(coord_b), 13);
+    }
+
+    #[test]
+    fn it_supports_addition() {
+        let coord_a = Coordinate::at(-3, -1, 4).unwrap();
+        let coord_b = Coordinate::at(2, 7, -9).unwrap();
+        let expected = Coordinate::at(-1, 6, -5).unwrap();
+        assert_eq!(coord_a + coord_b, expected);
+    }
+
+    #[test]
+    fn it_supports_subtraction() {
+        let coord_a = Coordinate::at(-3, -1, 4).unwrap();
+        let coord_b = Coordinate::at(2, 7, -9).unwrap();
+        let expected = Coordinate::at(-5, -8, 13).unwrap();
+        assert_eq!(coord_a - coord_b, expected);
     }
 }
