@@ -7,7 +7,7 @@ use std::ops::{Add, Sub};
 /// See http://www.redblobgames.com/grids/hexagons/#coordinates for more detail.
 ///
 /// All three coordinates must sum to zero.
-#[derive(Debug,PartialEq,PartialOrd)]
+#[derive(Debug,PartialEq,PartialOrd,Clone,Copy)]
 pub struct Coordinate {
     x: i64,
     y: i64,
@@ -42,6 +42,15 @@ impl Coordinate {
             Coordinate::at(self.x - 1, self.y, self.z + 1).unwrap(),
             Coordinate::at(self.x - 1, self.y + 1, self.z).unwrap(),
         ]
+    }
+
+    /// Get the neighbor in `direction`. Valid directions are in [0, 5].
+    pub fn neighbor(&self, direction: usize) -> Result<Coordinate, &'static str> {
+        let neighbors = self.neighbors();
+        match neighbors.get(direction) {
+            Some(val) => Ok(val.to_owned()),
+            None => Err("Invalid direction"),
+        }
     }
 
     /// Get the distance between two coordinates, in grid tiles.
@@ -140,5 +149,19 @@ mod tests {
         let coord_b = Coordinate::at(2, 7, -9).unwrap();
         let expected = Coordinate::at(-5, -8, 13).unwrap();
         assert_eq!(coord_a - coord_b, expected);
+    }
+
+    #[test]
+    fn it_produces_neighbors_given_a_direction() {
+        let coord = Coordinate::at(-3, -1, 4).unwrap();
+        let expected = Ok(Coordinate::at(-2, -1, 3).unwrap());
+        assert_eq!(coord.neighbor(0), expected);
+    }
+
+    #[test]
+    fn it_produces_no_neighbors_given_a_bad_direction() {
+        let coord = Coordinate::at(-3, -1, 4).unwrap();
+        let expected = Err("Invalid direction");
+        assert_eq!(coord.neighbor(6), expected);
     }
 }
