@@ -37,10 +37,10 @@ impl Coordinate {
         vec![
             Coordinate::at(self.x + 1, self.y, self.z - 1).unwrap(),
             Coordinate::at(self.x + 1, self.y - 1, self.z).unwrap(),
-            Coordinate::at(self.x - 1, self.y + 1, self.z).unwrap(),
-            Coordinate::at(self.x - 1, self.y, self.z + 1).unwrap(),
-            Coordinate::at(self.x, self.y + 1, self.z - 1).unwrap(),
             Coordinate::at(self.x, self.y - 1, self.z + 1).unwrap(),
+            Coordinate::at(self.x, self.y + 1, self.z - 1).unwrap(),
+            Coordinate::at(self.x - 1, self.y, self.z + 1).unwrap(),
+            Coordinate::at(self.x - 1, self.y + 1, self.z).unwrap(),
         ]
     }
 
@@ -111,10 +111,10 @@ mod tests {
         let expected = vec![
             Coordinate::at(1, 0, -1).unwrap(),
             Coordinate::at(1, -1, 0).unwrap(),
-            Coordinate::at(-1, 1, 0).unwrap(),
-            Coordinate::at(-1, 0, 1).unwrap(),
-            Coordinate::at(0, 1, -1).unwrap(),
             Coordinate::at(0, -1, 1).unwrap(),
+            Coordinate::at(0, 1, -1).unwrap(),
+            Coordinate::at(-1, 0, 1).unwrap(),
+            Coordinate::at(-1, 1, 0).unwrap(),
         ];
         assert_eq!(coord.neighbors(), expected);
     }
